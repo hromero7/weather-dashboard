@@ -1,0 +1,40 @@
+#header {
+    background-color: rgb(29, 28, 28); 
+    color: white; 
+    font-size: 30px; 
+    font-family: Arial, Helvetica, sans-serif;  
+    height: 50px; 
+    text-align: center;
+}
+
+.wrapper {
+    display: grid; 
+    grid-template-columns: 1fr 2fr;
+    
+}
+
+.search {
+    background-color: rgb(179, 178, 178); 
+}
+
+#currentResult {
+    border: 1px solid black; 
+}
+
+#forecast {
+    display: grid;
+    border: 1px solid black; 
+    margin-top: 10px; 
+}
+
+.currentForecast {
+    display: inline-grid; 
+    
+    
+}
+
+img {
+    width: 45px; 
+    position: relative; 
+    bottom: -14px; 
+}

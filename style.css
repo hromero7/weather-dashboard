@@ -23,18 +23,29 @@
 
 #forecast {
     display: grid;
-    border: 1px solid black; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    
     margin-top: 10px; 
 }
 
 .currentForecast {
     display: inline-grid; 
     
-    
+}
+
+.current-img {
+    position: relative; 
+    bottom: -14px; 
 }
 
 img {
     width: 45px; 
-    position: relative; 
-    bottom: -14px; 
+
+}
+
+#currentForecast {
+    padding: 20px;
+    margin: 20px;
+    background-color: rgb(91, 91, 245);
+
 }

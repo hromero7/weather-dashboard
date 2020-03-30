@@ -83,6 +83,10 @@ $.ajax({
 }).then(function(data){
     console.log(data);
     //displaying name of city for current forecast
+    var lat = data.coord.lat;
+    var lon = data.coord.lon;
+    var uvSunrise = data.sys.sunrise;
+    var uvSunset = data.sys.sunset;
     var displayName = data.name;
     var newEl = document.createElement("h2");
         newEl.innerHTML = displayName + " (" + today + ") ";
@@ -111,11 +115,14 @@ $.ajax({
     var newPara3 = document.createElement("p");
         newPara3.innerHTML = "Wind Speed: " + wind + " MPH";
         currentForecast.appendChild(newPara3);
+
+    displayUVIndex(lat, lon, uvSunrise, uvSunset);
 }).catch(function(error){
     console.log('This is my error '+ error)
 });
 
 }
+
 // display five day forecast function 
 function displayFiveDay() {
 
@@ -169,5 +176,41 @@ function displayFiveDay() {
     
     }
 
+// display UV Index function
+
+function displayUVIndex(gLat, gLon, gSunrise, gSunset) {
+    $.ajax({
+        url: "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + gLat + "&lon=" + gLon + "&start=" + gSunrise + "&end=" + gSunset,
+        type: 'GET',
+        headers: {
+            'Access-Control-Allow-Origin':'localhost:5500'
+        }   
+    }).then(function(response){
+        console.log('this is my response ' + response)
+        return response
+    }).then(function(data){
+        console.log(data);
+        var uvIndex = data[0].value;
+        var newPara4 = document.createElement("p");
+            newPara4.innerHTML = "UV Index: " + uvIndex;
+            newPara4.style.width = "100px"; 
+            currentForecast.appendChild(newPara4);
+        if (uvIndex <= 2){
+            newPara4.style.backgroundColor = "green";
+        } else if (uvIndex <= 5) {
+            newPara4.style.backgroundColor = "yellow";
+        } else if (uvIndex <= 7) {
+            newPara4.style.backgroundColor = "orange";
+        } else if (uvIndex <= 10) {
+            newPara4.style.backgroundColor = "red";
+        } else if (uvIndex > 11) {
+            newPara4.style.backgroundColor = "violet";
+        }
+
+    })
+    .catch(function(error){
+        console.log('This is my error '+ error)
+    });
+}
 
 }

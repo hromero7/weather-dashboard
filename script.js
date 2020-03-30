@@ -22,9 +22,10 @@ function displaySearchHistory() {
 cityArray = JSON.parse(localStorage.getItem("searchHistory"));
 
 for (i = 0; i < cityArray.length; i++) {
-    var newDiv2 = document.createElement("div");
-    newDiv2.innerHTML = cityArray[i];
-    searchHistory.prepend(newDiv2);
+    var newBtn = document.createElement("button");
+    newBtn.setAttribute("class", "search-history-btn");
+    newBtn.innerHTML = cityArray[i];
+    searchHistory.prepend(newBtn);
 }
 
 }

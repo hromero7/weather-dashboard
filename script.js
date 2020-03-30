@@ -21,14 +21,29 @@ function displaySearchHistory() {
 
 cityArray = JSON.parse(localStorage.getItem("searchHistory"));
 
-for (i = 0; i < cityArray.length; i++) {
+for (var i = 0; i < cityArray.length; i++) {
     var newBtn = document.createElement("button");
     newBtn.setAttribute("class", "search-history-btn");
+    newBtn.setAttribute("value", cityArray[i]);
     newBtn.innerHTML = cityArray[i];
     searchHistory.prepend(newBtn);
+
+    // add event listener
+    document.querySelector(".search-history-btn").addEventListener("click", function(event){
+        event.preventDefault();
+        currentForecast.innerHTML = "";
+        fiveDay.innerHTML = "";
+        console.log($(this).val());
+        cityName = $(this).val();
+        displayCurrentForecast();
+        displayFiveDay();   
+    
+    })
+
 }
 
 }
+
 
 // var url = "api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
 
@@ -45,11 +60,17 @@ btn.addEventListener("click", function(event){
     localStorage.setItem("searchHistory", JSON.stringify(cityArray));
     // cityArray = JSON.parse(localStorage.getItem("searchHistory"));
 
+    //calling functions
     displaySearchHistory();
-    
-   
+    displayCurrentForecast();
+    displayFiveDay();
+});
 
+displaySearchHistory();
 
+// display current forecast function
+
+function displayCurrentForecast() {
 $.ajax({
     url: "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey,
     type: 'GET',
@@ -94,59 +115,59 @@ $.ajax({
     console.log('This is my error '+ error)
 });
 
+}
+// display five day forecast function 
+function displayFiveDay() {
 
-// this calls 5 day forecast
-
-$.ajax({
-    url: "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey,
-    type: 'GET',
-    headers: {
-        'Access-Control-Allow-Origin':'localhost:5500'
-    }   
-}).then(function(response){
-    console.log('this is my response ' + response)
-    return response
-}).then(function(data){
-    console.log(data);
-    forecastArray.push(data.list);
-    console.log(forecastArray); 
+    $.ajax({
+        url: "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey,
+        type: 'GET',
+        headers: {
+            'Access-Control-Allow-Origin':'localhost:5500'
+        }   
+    }).then(function(response){
+        console.log('this is my response ' + response)
+        return response
+    }).then(function(data){
+        console.log(data);
+        forecastArray.push(data.list);
+        console.log(forecastArray); 
+        
+        
+        var tempArray = [5,13,21,29,37];
+        
+        for (var i = 0; i < tempArray.length; i++){
     
+            // console.log(tempArray[i]); 
+        var msec = Date.parse(data.list[tempArray[i]].dt_txt);
+        var forecastDay = new Date(msec).toLocaleDateString();
     
-    var tempArray = [5,13,21,29,37];
+        
+        var tempConversion = ((data.list[tempArray[i]].main.temp) - 273.15) * 9/5 + 32;
+        var temp = Math.round(tempConversion * 10)/10;
     
-    for (var i = 0; i < tempArray.length; i++){
-
-        // console.log(tempArray[i]); 
-    var msec = Date.parse(data.list[tempArray[i]].dt_txt);
-    var forecastDay = new Date(msec).toLocaleDateString();
-
+        var weatherIcon = data.list[tempArray[i]].weather[0].icon; 
+        var iconUrl = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
+        // var newImg = document.createElement("img");
+        //     newImg.setAttribute("src" , iconUrl);
     
-    var tempConversion = ((data.list[tempArray[i]].main.temp) - 273.15) * 9/5 + 32;
-    var temp = Math.round(tempConversion * 10)/10;
-
-    var weatherIcon = data.list[tempArray[i]].weather[0].icon; 
-    var iconUrl = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
-    // var newImg = document.createElement("img");
-    //     newImg.setAttribute("src" , iconUrl);
-
-    var forecastHumidity = data.list[tempArray[i]].main.humidity;
-
-    var newDiv = document.createElement("div");
-        newDiv.setAttribute("class", "forecastResult");
-        newDiv.innerHTML = "<p>"+ forecastDay + "<p>" 
-                            + "<img src=" + iconUrl + ">"
-                            + "<p>Temp: " + temp + "&#8457;</p>"
-                            + "<p>Humidity: " + forecastHumidity + "% </p>";
-        fiveDay.appendChild(newDiv); 
+        var forecastHumidity = data.list[tempArray[i]].main.humidity;
+    
+        var newDiv = document.createElement("div");
+            newDiv.setAttribute("class", "forecastResult");
+            newDiv.innerHTML = "<p>"+ forecastDay + "<p>" 
+                                + "<img src=" + iconUrl + ">"
+                                + "<p>Temp: " + temp + "&#8457;</p>"
+                                + "<p>Humidity: " + forecastHumidity + "% </p>";
+            fiveDay.appendChild(newDiv); 
+        }
+        
+    })
+    .catch(function(error){
+        console.log('This is my error '+ error)
+    });
+    
     }
-    
-})
-.catch(function(error){
-    console.log('This is my error '+ error)
-});
 
-});
-
-displaySearchHistory();
 
 }

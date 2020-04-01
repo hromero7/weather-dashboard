@@ -162,6 +162,12 @@ function displayFiveDay() {
     
         var newDiv = document.createElement("div");
             newDiv.setAttribute("class", "forecastResult");
+            newDiv.style.backgroundColor = "#3F85FF";
+            newDiv.style.color = "white";
+            newDiv.style.margin = "10px";
+            newDiv.style.fontWeight = "bold";
+            newDiv.style.padding = "10px";
+            newDiv.style.borderRadius = "10px";
             newDiv.innerHTML = "<p>"+ forecastDay + "<p>" 
                                 + "<img src=" + iconUrl + ">"
                                 + "<p>Temp: " + temp + "&#8457;</p>"
@@ -194,6 +200,7 @@ function displayUVIndex(gLat, gLon, gSunrise, gSunset) {
         var newPara4 = document.createElement("p");
             newPara4.innerHTML = "UV Index: " + uvIndex;
             newPara4.style.width = "100px"; 
+            newPara4.style.color = "white";
             currentForecast.appendChild(newPara4);
         if (uvIndex <= 2){
             newPara4.style.backgroundColor = "green";

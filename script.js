@@ -198,7 +198,7 @@ function displayUVIndex(gLat, gLon, gSunrise, gSunset) {
         console.log(data);
         var uvIndex = data[0].value;
         var newPara4 = document.createElement("p");
-            newPara4.innerHTML = "UV Index: " + uvIndex;
+            newPara4.innerHTML = "<span style= 'background-color: white; color: black'>" + "UV Index: </span>" + uvIndex;
             newPara4.style.width = "100px"; 
             newPara4.style.color = "white";
             currentForecast.appendChild(newPara4);
